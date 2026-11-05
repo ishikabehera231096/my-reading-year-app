@@ -11,7 +11,7 @@ Goodreads shows books and pages per year. This shows much more:
 - Authors you have read more than once
 - A year filter that updates the stats
 
-![Screenshot of My Reading Year](docs/screenshot.png)
+![Screenshot of My Reading Year](screenshot.png)
 
 ## Privacy
 
