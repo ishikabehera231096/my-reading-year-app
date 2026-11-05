@@ -23,7 +23,7 @@ Everything runs in your browser. Your CSV is read locally and is never uploaded 
 2. Download the CSV when it is ready.
 3. Open the live site (link in the repo's About section), then drop the CSV on the page.
 
-To try it first, use **Show example data**, or upload `sample/sample_goodreads_export.csv`.
+To try it first, use **Show example data**, or upload `sample_goodreads_export.csv`.
 
 ## Notes on the data
 
