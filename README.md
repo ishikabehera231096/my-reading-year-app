@@ -13,7 +13,7 @@ Goodreads shows books and pages per year. This shows much more:
 - A **Save image** button on every chart, and a **share card** (portrait PNG with your totals, a bar chart and a few facts, in dark or light, with an optional name)
 - A year filter that updates the stats
 
-![Screenshot of My Reading Year](docs/screenshot.png)
+![Screenshot of My Reading Year](screenshot.png)
 
 ## Privacy
 
