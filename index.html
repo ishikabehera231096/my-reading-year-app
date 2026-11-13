@@ -26,6 +26,7 @@
   --b1: #86b6ef; --b2: #5598e7; --b3: #2a78d6; --b4: #1c5cab; --b5: #104281;
   --h0: #eef2f7; --h1: #cde2fb; --h2: #9ec5f4; --h3: #6da7ec; --h4: #3987e5; --h5: #1c5cab; --h6: #0d366b;
   --heat-fg-lo: #12171e; --heat-fg-hi: #ffffff;
+  --c-fic: #2a78d6; --c-non: #eb6834; --c-unk: #b4bcc9;
   --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
   --font-ui: "Instrument Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
 }
@@ -37,6 +38,7 @@
     --b1: #9ec5f4; --b2: #6da7ec; --b3: #3987e5; --b4: #256abf; --b5: #184f95;
     --h0: #1e252f; --h1: #104281; --h2: #1c5cab; --h3: #2a78d6; --h4: #5598e7; --h5: #86b6ef; --h6: #cde2fb;
     --heat-fg-lo: #ffffff; --heat-fg-hi: #0e1217;
+    --c-fic: #3987e5; --c-non: #d95926; --c-unk: #5a6473;
     color-scheme: dark;
   }
 }
@@ -47,9 +49,11 @@
   --b1: #9ec5f4; --b2: #6da7ec; --b3: #3987e5; --b4: #256abf; --b5: #184f95;
   --h0: #1e252f; --h1: #104281; --h2: #1c5cab; --h3: #2a78d6; --h4: #5598e7; --h5: #86b6ef; --h6: #cde2fb;
   --heat-fg-lo: #ffffff; --heat-fg-hi: #0e1217;
+  --c-fic: #3987e5; --c-non: #d95926; --c-unk: #5a6473;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 body {
   background: var(--bg); color: var(--ink);
   font-family: var(--font-ui); font-size: 15px; line-height: 1.5;
@@ -70,8 +74,8 @@ button, select, input { font: inherit; color: inherit; }
 .lock { color: var(--muted); font-size: 13px; }
 
 .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
-.panel-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px; }
-.panel-head .sub { color: var(--muted); font-size: 13px; }
+.panel-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; }
+.panel-head .sub { color: var(--muted); font-size: 13px; margin-left: auto; }
 .cols2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); gap: 16px; }
 
 .loader { display: flex; flex-wrap: wrap; gap: 12px; align-items: stretch; }
@@ -150,6 +154,35 @@ details.tv[open] summary { margin-bottom: 8px; }
 .tip.on { opacity: 1; }
 .pending { color: var(--muted); font-size: 13px; }
 footer { color: var(--muted); font-size: 13px; }
+.imgbtn { border: 1px solid var(--line); background: transparent; color: var(--ink2); border-radius: 6px; padding: 3px 9px; font-size: 12px; cursor: pointer; }
+.imgbtn:hover { border-color: var(--accent); color: var(--ink); }
+.dl { fill: var(--ink); font: 600 26px var(--font-display); }
+.ds { fill: var(--muted); font: 12px var(--font-ui); }
+.seg:hover { opacity: 0.85; }
+.gwrap { display: grid; grid-template-columns: minmax(0, 260px) minmax(0, 1fr); gap: 20px; align-items: start; }
+.gdonut, .gyear { display: flex; flex-direction: column; align-items: center; gap: 10px; min-width: 0; }
+.gyear { align-items: stretch; }
+.gyear .imgbtn, .gdonut .imgbtn { align-self: flex-end; }
+@media (max-width: 700px) { .gwrap { grid-template-columns: minmax(0, 1fr); } }
+.legend.col { flex-direction: column; align-items: flex-start; }
+.gnote { color: var(--muted); font-size: 13px; }
+.glook, .prog { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
+.pbar { flex: 1 1 200px; height: 8px; border-radius: 4px; background: var(--surface2); overflow: hidden; }
+.pbar i { display: block; height: 100%; background: var(--accent); }
+.gbtn { border: 1px solid var(--line); background: var(--surface); color: var(--ink2); border-radius: 6px; padding: 2px 8px; font-size: 12px; cursor: pointer; margin-right: 4px; }
+.gbtn:hover { border-color: var(--accent); color: var(--ink); }
+.ov { position: fixed; inset: 0; z-index: 100; background: rgba(8, 10, 14, 0.66); display: flex; align-items: flex-start; justify-content: center; overflow: auto;
+  padding-top: max(16px, env(safe-area-inset-top, 0px)); padding-bottom: max(16px, env(safe-area-inset-bottom, 0px));
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.ovbox { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 820px; min-width: 0; }
+.ovbox.card { max-width: 520px; }
+.ovhead { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.ovctl { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; }
+.ovctl input { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px; min-width: 0; flex: 1 1 180px; }
+.ovimg img { display: block; width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--line); }
+.ovfoot { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; }
+a.btn { text-decoration: none; display: inline-block; color: var(--ink); }
+a.btn.primary { color: #fff; }
 @media (prefers-reduced-motion: reduce) { .tip { transition: none; } }
 </style>
 </head>
@@ -159,7 +192,7 @@ footer { color: var(--muted); font-size: 13px; }
   <header class="top">
     <h1>My Reading Year</h1>
     <p class="lede">Upload your Goodreads library export and see how much you read, how fast, how long the books were, and how you rated them.</p>
-    <p class="lock">Your file is read in this browser tab and is never uploaded anywhere.</p>
+    <p class="lock">Your file is read in this browser tab and is never uploaded. The one exception is the optional genre lookup, which only runs when you click it and sends the ISBN or title of books it needs to look up to Google Books.</p>
   </header>
 
   <section class="panel" aria-label="Load your data">
@@ -196,6 +229,7 @@ footer { color: var(--muted); font-size: 13px; }
               <button type="button" id="m-pages" aria-pressed="false">Pages</button>
             </div>
           </div>
+          <button class="btn primary" id="share" data-act="share" type="button" style="margin-left:auto">Create share card</button>
         </div>
         <div class="stats" id="stats"></div>
       </section>
@@ -237,9 +271,21 @@ footer { color: var(--muted); font-size: 13px; }
         <div class="authors" id="authors"></div>
       </section>
 
-      <section class="panel">
-        <div class="panel-head"><h2>Fiction vs non-fiction</h2></div>
-        <p class="pending">Coming in the next version. The Goodreads export has no genre column, so this needs a lookup against a book database. Everything above works from the file alone.</p>
+      <section class="panel" id="genre-panel">
+        <div class="panel-head"><h2>Fiction vs non-fiction</h2><span class="sub" id="s-genre"></span></div>
+        <div id="genre-status"></div>
+        <div class="gwrap" id="genre-charts">
+          <div class="gdonut">
+            <div class="chart" id="c-donut"></div>
+            <div class="legend col" id="lg-genre"></div>
+            <button class="imgbtn" type="button" data-exp="c-donut">Save image</button>
+          </div>
+          <div class="gyear">
+            <div class="chart" id="c-gy"></div>
+            <button class="imgbtn" type="button" data-exp="c-gy">Save image</button>
+          </div>
+        </div>
+        <details class="tv" id="unk-det"><summary id="unk-sum"></summary><div class="tablewrap" id="unk"></div></details>
       </section>
 
       <section class="panel">
@@ -250,6 +296,23 @@ footer { color: var(--muted); font-size: 13px; }
   <footer>Ratings of 0 in the export mean "not rated" and are left out of averages. Only books on your Read shelf with a finish date are counted.</footer>
 </div>
 <div class="tip" id="tip" role="tooltip"></div>
+<div class="ov" id="ov" hidden role="dialog" aria-modal="true" aria-labelledby="ov-title">
+  <div class="ovbox" id="ovbox">
+    <div class="ovhead"><h2 id="ov-title"></h2><button class="btn" id="ov-close" type="button">Close</button></div>
+    <div class="ovctl" id="ov-ctl" hidden>
+      <input id="cardname" type="text" maxlength="28" placeholder="Your name (optional)" aria-label="Name shown on the card" autocomplete="off">
+      <div class="seg" role="group" aria-label="Card theme">
+        <button type="button" id="card-dark" aria-pressed="true">Dark</button>
+        <button type="button" id="card-light" aria-pressed="false">Light</button>
+      </div>
+    </div>
+    <div class="ovimg"><img id="ov-img" alt=""></div>
+    <div class="ovfoot">
+      <a class="btn primary" id="ov-dl" download="chart.png" href="#">Download PNG</a>
+      <span class="gnote">If the download does not start, press and hold the image (or right-click it) and choose Save image.</span>
+    </div>
+  </div>
+</div>
 
 <script>
 (function () {
@@ -272,7 +335,7 @@ footer { color: var(--muted); font-size: 13px; }
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
   var plural = function (n, w) { return n + " " + w + (n === 1 ? "" : "s"); };
 
-  var BOOKS = [], META = {}, YEAR = "all", METRIC = "books", SAMPLE = false;
+  var BOOKS = [], META = {}, YEAR = "all", METRIC = "books", SAMPLE = false, LAST = null, CARDOPT = { name: "", theme: "dark" };
 
   /* ---------- CSV parsing ---------- */
   function parseCSV(text) {
@@ -305,7 +368,7 @@ footer { color: var(--muted); font-size: 13px; }
     if (!rows.length) throw new Error("That file is empty.");
     var head = rows[0].map(function (h) { return h.trim().toLowerCase(); });
     var ix = function (n) { return head.indexOf(n); };
-    var iT = ix("title"), iA = ix("author"), iS = ix("exclusive shelf"), iD = ix("date read"), iP = ix("number of pages"), iR = ix("my rating");
+    var iT = ix("title"), iA = ix("author"), iS = ix("exclusive shelf"), iD = ix("date read"), iP = ix("number of pages"), iR = ix("my rating"), iI = ix("isbn"), iI13 = ix("isbn13"), iB = ix("bookshelves");
     if (iT < 0 || iA < 0 || iS < 0 || iD < 0) {
       throw new Error("This does not look like a Goodreads library export. The file needs Title, Author, Exclusive Shelf and Date Read columns. Use My Books, Import and export, Export Library on goodreads.com.");
     }
@@ -318,8 +381,10 @@ footer { color: var(--muted); font-size: 13px; }
       var d = parseDate(x[iD]);
       if (!d) { noDate++; continue; }
       var pg = iP >= 0 ? parseInt(x[iP], 10) : NaN;
+      var ttl = (x[iT] || "").trim(), au = (x[iA] || "").trim() || "Unknown author";
+      var isbn = cleanIsbn(iI13 >= 0 ? x[iI13] : "") || cleanIsbn(iI >= 0 ? x[iI] : "");
       books.push({
-        title: (x[iT] || "").trim(), author: (x[iA] || "").trim() || "Unknown author",
+        title: ttl, author: au, isbn: isbn, key: isbn || (ttl + "|" + au).toLowerCase(), sg: iB >= 0 ? shelfGenre(x[iB]) : null,
         rating: iR >= 0 ? (parseInt(x[iR], 10) || 0) : 0, pages: pg > 0 ? pg : null,
         date: d, y: d.getUTCFullYear(), m: d.getUTCMonth()
       });
@@ -328,6 +393,7 @@ footer { color: var(--muted); font-size: 13px; }
       throw new Error(readShelf ? "None of the " + readShelf + " books on your Read shelf has a finish date, so there is nothing to chart by time. Add dates on Goodreads and export again." : "No books on the Read shelf were found in this file.");
     }
     books.sort(function (a, b) { return a.date - b.date; });
+    books.forEach(function (b, i) { b.id = i; });
     return { books: books, readShelf: readShelf, noDate: noDate };
   }
 
@@ -349,7 +415,8 @@ footer { color: var(--muted); font-size: 13px; }
     function line(title, author, rating, pages, dateRead, shelf, review) {
       id++;
       var lf = author.split(" ").reverse().join(", ");
-      out.push([id, csvq(title), csvq(author), csvq(lf), "", '="' + (1000000000 + id) + '"', '="' + (9780000000000 + id) + '"', rating, "3.9", "Example Press", "Paperback", pages, "2015", "2015", dateRead, dateRead || "2021/01/01", "", "", shelf, csvq(review || ""), "", "", dateRead ? 1 : 0, 0].join(","));
+      var hs = (author.length * 7 + title.length * 3) % 10, shelves = hs < 4 ? "fiction" : hs < 6 ? "non-fiction" : hs < 8 ? "science-fiction,favorites" : "";
+      out.push([id, csvq(title), csvq(author), csvq(lf), "", '="' + (1000000000 + id) + '"', '="' + (9780000000000 + id) + '"', rating, "3.9", "Example Press", "Paperback", pages, "2015", "2015", dateRead, dateRead || "2021/01/01", csvq(shelves), "", shelf, csvq(review || ""), "", "", dateRead ? 1 : 0, 0].join(","));
     }
     Object.keys(perYear).forEach(function (yk) {
       var y = +yk, maxDay = y === 2026 ? 303 : 364;
@@ -579,9 +646,15 @@ footer { color: var(--muted); font-size: 13px; }
 
     // book list
     $("bk-sum").textContent = "All books in this view (" + cur.length + ")";
-    var bt = '<table><thead><tr><th>Finished</th><th>Title</th><th>Author</th><th class="n">Pages</th><th class="n">Rating</th></tr></thead><tbody>';
-    cur.slice().reverse().slice(0, 600).forEach(function (b) { bt += "<tr><td>" + b.date.toISOString().slice(0, 10) + '</td><td class="wrapc">' + esc(b.title) + "</td><td>" + esc(b.author) + '</td><td class="n">' + (b.pages || "") + '</td><td class="n">' + (b.rating || "") + "</td></tr>"; });
+    var bt = '<table><thead><tr><th>Finished</th><th>Title</th><th>Author</th><th class="n">Pages</th><th class="n">Rating</th><th>Genre</th></tr></thead><tbody>';
+    cur.slice().reverse().slice(0, 600).forEach(function (b) {
+      var g = genreOf(b);
+      bt += "<tr><td>" + b.date.toISOString().slice(0, 10) + '</td><td class="wrapc">' + esc(b.title) + "</td><td>" + esc(b.author) + '</td><td class="n">' + (b.pages || "") + '</td><td class="n">' + (b.rating || "") + '</td><td><button class="gbtn" type="button" data-i="' + b.id + '" data-g="T" title="Click to change">' + (g === "F" ? "Fiction" : g === "N" ? "Non-fiction" : "Set") + "</button></td></tr>";
+    });
     $("books").innerHTML = bt + "</tbody></table>";
+
+    LAST = { scope: scope, isAll: isAll, years: years, per: per, cur: cur, totalPages: totalPages, avgRating: avgRating, gapAvg: gapAvg, bestK: bestK, byMonth: byMonth, multi: multi, ac: ac };
+    renderGenre();
   }
 
   function buildYearSelect() {
@@ -609,6 +682,301 @@ footer { color: var(--muted); font-size: 13px; }
     fr.onload = function () { load(String(fr.result), false); };
     fr.onerror = function () { showMessage("That file could not be read. Try exporting it again.", true); };
     fr.readAsText(f);
+  }
+
+  /* ---------- fiction vs non-fiction ---------- */
+  var CACHE = lsGet("ry.g1"), MANUAL = lsGet("ry.m1"), LOOKUP = { running: false, done: 0, total: 0, msg: "", cancel: false }, UOPEN = false;
+  function lsGet(k) { try { return JSON.parse(localStorage.getItem(k) || "{}") || {}; } catch (e) { return {}; } }
+  function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* storage unavailable */ } }
+  function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+  function cleanIsbn(s) { return (s || "").replace(/[^0-9Xx]/g, ""); }
+  function shelfGenre(s) {
+    var toks = (s || "").toLowerCase().split(","), f = false;
+    for (var i = 0; i < toks.length; i++) {
+      var t = toks[i].trim();
+      if (/^non[-_ ]?fiction$/.test(t)) return "N";
+      if (t.indexOf("fiction") >= 0 && t.indexOf("non") < 0) f = true;
+    }
+    return f ? "F" : null;
+  }
+  function classifyCats(cats) {
+    if (!cats || !cats.length) return null;
+    var j = cats.join(" | ").toLowerCase();
+    return (/fiction/.test(j) && !/non-?fiction/.test(j)) ? "F" : "N";
+  }
+  function genreOf(b) {
+    if (MANUAL[b.key]) return MANUAL[b.key];
+    if (b.sg) return b.sg;
+    var c = CACHE[b.key];
+    return c === "F" || c === "N" ? c : null;
+  }
+  function genreCounts(list) { var c = { F: 0, N: 0, U: 0 }; list.forEach(function (b) { c[genreOf(b) || "U"]++; }); return c; }
+
+  function gfetch(q, max) {
+    var url = "https://www.googleapis.com/books/v1/volumes?q=" + encodeURIComponent(q) + "&maxResults=" + max + "&printType=books&fields=items(volumeInfo(categories))";
+    var attempt = function (t) {
+      return fetch(url).then(function (r) {
+        if (r.status === 429) { if (t >= 2) throw { rate: true }; return sleep(1500 * (t + 1)).then(function () { return attempt(t + 1); }); }
+        if (r.status === 403) throw { rate: true };
+        if (!r.ok) return [];
+        return r.json().then(function (j) { return j.items || []; });
+      }, function () { throw { net: true }; });
+    };
+    return attempt(0);
+  }
+  function lookupBook(b) {
+    var qs = [];
+    if (b.isbn) qs.push(["isbn:" + b.isbn, 1]);
+    if (b.title) qs.push(["intitle:" + b.title.replace(/\(.*?\)/g, "").split(":")[0].trim() + " inauthor:" + b.author, 3]);
+    var i = 0;
+    var next = function () {
+      if (i >= qs.length) return Promise.resolve("U");
+      var q = qs[i++];
+      return gfetch(q[0], q[1]).then(function (items) {
+        for (var k = 0; k < items.length; k++) { var g = classifyCats(items[k].volumeInfo && items[k].volumeInfo.categories); if (g) return g; }
+        return next();
+      });
+    };
+    return next();
+  }
+  async function runLookup() {
+    var todo = BOOKS.filter(function (b) { return !genreOf(b) && !CACHE[b.key]; });
+    if (!todo.length || LOOKUP.running) return;
+    LOOKUP = { running: true, done: 0, total: todo.length, msg: "", cancel: false };
+    renderGenre();
+    var idx = 0, netFail = 0, stop = false, rate = false;
+    async function worker() {
+      while (!stop && !LOOKUP.cancel) {
+        var b = todo[idx++]; if (!b) return;
+        try { CACHE[b.key] = await lookupBook(b); }
+        catch (e) { if (e && e.rate) { rate = true; stop = true; return; } netFail++; if (netFail >= 3) { stop = true; return; } continue; }
+        LOOKUP.done++;
+        if (LOOKUP.done % 4 === 0) lookupProgress();
+        await sleep(120);
+      }
+    }
+    await Promise.all([worker(), worker(), worker()]);
+    lsSet("ry.g1", CACHE);
+    var left = BOOKS.filter(function (b) { return !genreOf(b); }).length;
+    LOOKUP.msg = rate ? "Google Books asked us to slow down. Your progress is saved, so try again in a few minutes."
+      : netFail >= 3 ? "Could not reach Google Books. Lookups can be blocked by the page you opened this in. They work on your own hosted copy of the site."
+      : LOOKUP.cancel ? "Stopped. Your progress is saved."
+      : "Lookup finished. " + (left ? plural(left, "book") + " still " + (left === 1 ? "has" : "have") + " no genre. You can tag " + (left === 1 ? "it" : "them") + " yourself below." : "Every book has a genre.");
+    LOOKUP.running = false;
+    render();
+  }
+  function lookupProgress() {
+    var bar = $("prog-bar"), txt = $("prog-txt");
+    if (bar) bar.style.width = (LOOKUP.done / LOOKUP.total * 100) + "%";
+    if (txt) txt.textContent = "Looked up " + LOOKUP.done + " of " + LOOKUP.total;
+  }
+  function donut(segs, size, big, small) {
+    var total = segs.reduce(function (t, s) { return t + s.v; }, 0), c = size / 2, R = size / 2 - 4, r = R * 0.62, ang = -Math.PI / 2;
+    var s = '<svg width="' + size + '" height="' + size + '" viewBox="0 0 ' + size + " " + size + '" role="img" aria-label="' + esc(segs.map(function (g) { return g.name + " " + g.v; }).join(", ")) + '">';
+    var p = function (rad, an) { return (c + rad * Math.cos(an)).toFixed(2) + "," + (c + rad * Math.sin(an)).toFixed(2); };
+    segs.forEach(function (g) {
+      if (!g.v) return;
+      var a = g.v / total * 2 * Math.PI, tip = esc(g.name + ": " + plural(g.v, "book"));
+      if (g.v === total) s += '<circle class="seg" cx="' + c + '" cy="' + c + '" r="' + ((R + r) / 2) + '" data-tip="' + tip + '" style="fill:none;stroke:' + g.color + ";stroke-width:" + (R - r) + '"/>';
+      else {
+        var a1 = ang + a, lg = a > Math.PI ? 1 : 0;
+        s += '<path class="seg" d="M' + p(R, ang) + "A" + R + " " + R + " 0 " + lg + " 1 " + p(R, a1) + "L" + p(r, a1) + "A" + r + " " + r + " 0 " + lg + " 0 " + p(r, ang) + 'Z" data-tip="' + tip + '" style="fill:' + g.color + ';stroke:var(--surface);stroke-width:2"/>';
+      }
+      ang += a;
+    });
+    return s + '<text class="dl" x="' + c + '" y="' + (c + 4) + '" text-anchor="middle">' + big + '</text><text class="ds" x="' + c + '" y="' + (c + 22) + '" text-anchor="middle">' + small + "</text></svg>";
+  }
+  function renderGenre() {
+    var A = LAST; if (!A) return;
+    var cur = A.cur, cs = genreCounts(cur), all = genreCounts(BOOKS), known = all.F + all.N;
+    var todo = BOOKS.filter(function (b) { return !genreOf(b) && !CACHE[b.key]; }).length;
+    $("s-genre").textContent = A.scope;
+    var st;
+    if (LOOKUP.running) {
+      st = '<div class="prog"><div class="pbar"><i id="prog-bar" style="width:' + (LOOKUP.done / LOOKUP.total * 100) + '%"></i></div><span class="gnote" id="prog-txt">Looked up ' + LOOKUP.done + " of " + LOOKUP.total + '</span><button class="btn" data-act="cancel" type="button">Stop</button></div>';
+    } else {
+      st = '<p class="gnote">' + known + " of " + BOOKS.length + " books have a genre. Genres come from your own Goodreads shelves named fiction or non-fiction, from lookups, and from tags you set yourself.</p>";
+      if (todo) st += '<div class="glook"><button class="btn primary" data-act="lookup" type="button">Look up ' + plural(todo, "book") + ' on Google Books</button><span class="gnote">This sends the ISBN, or the title and author, of those books to Google. Nothing else from your file is sent.</span></div>';
+      if (LOOKUP.msg) st += '<div class="notice">' + esc(LOOKUP.msg) + "</div>";
+    }
+    $("genre-status").innerHTML = st;
+    $("genre-charts").hidden = !known;
+    if (known) {
+      var classified = cs.F + cs.N, pct = classified ? Math.round(cs.F / classified * 100) : null;
+      $("c-donut").innerHTML = donut([{ v: cs.F, color: "var(--c-fic)", name: "Fiction" }, { v: cs.N, color: "var(--c-non)", name: "Non-fiction" }, { v: cs.U, color: "var(--c-unk)", name: "No genre yet" }], Math.min(210, Math.max(150, widthOf($("c-donut")))), pct == null ? "n/a" : pct + "%", "fiction");
+      $("lg-genre").innerHTML = [["Fiction", cs.F, "--c-fic"], ["Non-fiction", cs.N, "--c-non"], ["No genre yet", cs.U, "--c-unk"]].map(function (r) { return '<span><i style="background:var(' + r[2] + ')"></i>' + r[0] + " " + r[1] + "</span>"; }).join("");
+      var gy = {}; A.years.forEach(function (y) { gy[y] = { F: 0, N: 0, U: 0 }; });
+      BOOKS.forEach(function (b) { gy[b.y][genreOf(b) || "U"]++; });
+      var lab = A.years.map(String);
+      $("c-gy").innerHTML = stackChart({ W: widthOf($("c-gy")), H: 220, labels: lab, hi: A.isAll ? null : A.years.indexOf(+A.scope), aria: "Fiction and non-fiction books per year", series: [
+        { name: "Fiction", color: "var(--c-fic)", values: A.years.map(function (y) { return gy[y].F; }) },
+        { name: "Non-fiction", color: "var(--c-non)", values: A.years.map(function (y) { return gy[y].N; }) },
+        { name: "No genre yet", color: "var(--c-unk)", values: A.years.map(function (y) { return gy[y].U; }) }] });
+    }
+    var unk = cur.filter(function (b) { return !genreOf(b); });
+    $("unk-det").hidden = !unk.length;
+    $("unk-det").open = UOPEN && unk.length > 0;
+    $("unk-sum").textContent = "Books without a genre (" + unk.length + "). Tag them yourself";
+    var t = "<table><thead><tr><th>Title</th><th>Author</th><th>Genre</th></tr></thead><tbody>";
+    unk.slice(0, 200).forEach(function (b) { t += '<tr><td class="wrapc">' + esc(b.title) + "</td><td>" + esc(b.author) + '</td><td><button class="gbtn" type="button" data-i="' + b.id + '" data-g="F">Fiction</button><button class="gbtn" type="button" data-i="' + b.id + '" data-g="N">Non-fiction</button></td></tr>'; });
+    $("unk").innerHTML = t + "</tbody></table>";
+  }
+
+  /* ---------- image export ---------- */
+  var FD = '"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif', FU = '"Instrument Sans","Segoe UI",system-ui,-apple-system,sans-serif';
+  function css(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+  function fit(x, t, maxW) { if (x.measureText(t).width <= maxW) return t; while (t.length > 1 && x.measureText(t + "…").width > maxW) t = t.slice(0, -1); return t + "…"; }
+  function rr(x, a, b, w, h, r) { x.beginPath(); if (x.roundRect) x.roundRect(a, b, w, h, r); else x.rect(a, b, w, h); x.fill(); }
+  function loadFonts() {
+    try { return Promise.all([document.fonts.load('700 100px "Bricolage Grotesque"'), document.fonts.load('600 22px "Bricolage Grotesque"'), document.fonts.load('400 14px "Instrument Sans"'), document.fonts.load('500 14px "Instrument Sans"'), document.fonts.load('600 14px "Instrument Sans"')]).catch(function () {}); } catch (e) { return Promise.resolve(); }
+  }
+  function svgBody(svg) {
+    return new Promise(function (res, rej) {
+      var w = +svg.getAttribute("width"), h = +svg.getAttribute("height"), c = svg.cloneNode(true), ns = "http://www.w3.org/2000/svg";
+      c.querySelectorAll(".hit,.hl,.hd").forEach(function (n) { n.remove(); });
+      c.setAttribute("xmlns", ns);
+      var st = document.createElementNS(ns, "style"), sf = "system-ui,Segoe UI,Arial,sans-serif";
+      st.textContent = ".ax{fill:" + css("--muted") + ";font:11px " + sf + "}.vl{fill:" + css("--ink2") + ";font:11px " + sf + "}.grid{stroke:" + css("--line") + ";stroke-width:1}.base{stroke:" + css("--muted") + ";stroke-width:1;opacity:.55}.dl{fill:" + css("--ink") + ";font:600 26px " + sf + "}.ds{fill:" + css("--muted") + ";font:12px " + sf + "}";
+      c.insertBefore(st, c.firstChild);
+      var xml = new XMLSerializer().serializeToString(c).replace(/var\((--[\w-]+)\)/g, function (m, n) { return css(n); });
+      var img = new Image();
+      img.onload = function () { res({ w: w, h: h, paint: function (x, ox, oy) { x.drawImage(img, ox, oy, w, h); } }); };
+      img.onerror = function () { rej(new Error("The chart could not be turned into an image.")); };
+      img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(xml);
+    });
+  }
+  function heatBody() {
+    var A = LAST, years = A.years, per = A.per, key = METRIC, w = 760, lw = 52, tw = 56, g = 3, ch = 30, cw = (w - lw - tw - g * 13) / 12, hmax = 0;
+    years.forEach(function (y) { per[y].months.forEach(function (c) { hmax = Math.max(hmax, c[key]); }); });
+    return { w: w, h: 22 + years.length * (ch + g), paint: function (x, ox, oy) {
+      x.font = "11px " + FU; x.fillStyle = css("--muted"); x.textAlign = "center";
+      MONTHS.forEach(function (m, i) { x.fillText(m, ox + lw + i * (cw + g) + cw / 2, oy + 12); });
+      x.textAlign = "right"; x.fillText("Total", ox + w, oy + 12);
+      years.forEach(function (yr, ri) {
+        var yy = oy + 22 + ri * (ch + g);
+        x.textAlign = "left"; x.fillStyle = css("--ink2"); x.font = "12px " + FU; x.fillText(String(yr), ox, yy + ch / 2 + 4);
+        per[yr].months.forEach(function (c, ci) {
+          var v = c[key], b = v ? Math.max(1, Math.ceil(v / hmax * 6)) : 0, cx = ox + lw + ci * (cw + g);
+          x.fillStyle = css("--h" + b); rr(x, cx, yy, cw, ch, 4);
+          if (v) { x.fillStyle = b >= 4 ? css("--heat-fg-hi") : css("--heat-fg-lo"); x.textAlign = "center"; x.font = "11px " + FU; x.fillText(key === "books" ? String(v) : compact(v), cx + cw / 2, yy + ch / 2 + 4); }
+        });
+        x.textAlign = "right"; x.fillStyle = css("--ink2"); x.font = "12px " + FU; x.fillText(key === "books" ? String(per[yr].books) : compact(per[yr].pages), ox + w, yy + ch / 2 + 4);
+      });
+      x.textAlign = "left";
+    } };
+  }
+  function authorsBody() {
+    var A = LAST, top = A.multi.slice(0, 15), mx = A.ac[top[0]], w = 760, nw = 230, bw = w - nw - 50;
+    return { w: w, h: top.length * 30, paint: function (x, ox, oy) {
+      top.forEach(function (a, i) {
+        var yy = oy + i * 30;
+        x.font = "14px " + FU; x.fillStyle = css("--ink"); x.textAlign = "left"; x.fillText(fit(x, a, nw - 12), ox, yy + 19);
+        x.fillStyle = css("--accent"); x.fillRect(ox + nw, yy + 9, Math.max(4, bw * A.ac[a] / mx), 12);
+        x.fillStyle = css("--ink2"); x.textAlign = "right"; x.fillText(String(A.ac[a]), ox + w, yy + 19);
+      });
+      x.textAlign = "left";
+    } };
+  }
+  function legendFor(id) {
+    if (id === "c-len") return BUCKETS.map(function (b, i) { return { label: b.label + " pages", color: css("--b" + (i + 1)) }; });
+    if (id === "c-donut" || id === "c-gy") return [{ label: "Fiction", color: css("--c-fic") }, { label: "Non-fiction", color: css("--c-non") }, { label: "No genre yet", color: css("--c-unk") }];
+    return null;
+  }
+  async function compose(title, sub, body, legend) {
+    await loadFonts();
+    var S = 2, pad = 28, W = Math.max(body.w, 480) + pad * 2, headH = 58, legH = legend ? 34 : 0, H = pad + headH + legH + body.h + 46;
+    var cv = document.createElement("canvas"); cv.width = W * S; cv.height = H * S;
+    var x = cv.getContext("2d"); x.scale(S, S);
+    x.fillStyle = css("--surface"); x.fillRect(0, 0, W, H);
+    x.textBaseline = "alphabetic"; x.textAlign = "left";
+    x.fillStyle = css("--ink"); x.font = "600 22px " + FD; x.fillText(title, pad, pad + 20);
+    x.fillStyle = css("--muted"); x.font = "13px " + FU; x.fillText(sub, pad, pad + 42);
+    var ly = pad + headH;
+    if (legend) { var lx = pad; legend.forEach(function (l) { x.fillStyle = l.color; x.fillRect(lx, ly + 6, 10, 10); x.fillStyle = css("--ink2"); x.font = "13px " + FU; x.fillText(l.label, lx + 16, ly + 16); lx += 16 + x.measureText(l.label).width + 18; }); }
+    body.paint(x, pad, ly + legH);
+    x.fillStyle = css("--muted"); x.font = "12px " + FU; x.fillText("Made with My Reading Year", pad, H - 18);
+    return cv;
+  }
+  var SCOPE_ALL_YEARS = { "c-by": 1, "c-py": 1, "c-len": 1, "c-rate": 1, "c-gy": 1 };
+  async function exportChart(id) {
+    var el = $(id); if (!el || !LAST) return;
+    try {
+      var title = id === "c-donut" ? "Fiction vs non-fiction" : id === "c-gy" ? "Fiction vs non-fiction by year" : ((el.closest(".panel").querySelector("h2") || {}).textContent || "Chart");
+      var sub = SCOPE_ALL_YEARS[id] ? "All years" : LAST.scope;
+      var body = id === "heat" ? heatBody() : id === "authors" ? authorsBody() : await svgBody(el.querySelector("svg"));
+      var cv = await compose(title, sub, body, legendFor(id));
+      openOv(title, cv.toDataURL("image/png"), "my-reading-year-" + (title + " " + sub).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") + ".png", false);
+    } catch (e) { showMessage(esc(e.message || "The image could not be created."), true); }
+  }
+
+  /* ---------- overlay and share card ---------- */
+  var ov = $("ov"), lastFocus = null;
+  function openOv(title, src, fname, isCard) {
+    lastFocus = document.activeElement;
+    $("ov-title").textContent = title; $("ov-img").src = src; $("ov-img").alt = title;
+    $("ov-dl").href = src; $("ov-dl").setAttribute("download", fname);
+    $("ov-ctl").hidden = !isCard; $("ovbox").classList.toggle("card", !!isCard);
+    ov.hidden = false; document.body.style.overflow = "hidden"; $("ov-close").focus();
+  }
+  function closeOv() { ov.hidden = true; document.body.style.overflow = ""; if (lastFocus && lastFocus.focus) lastFocus.focus(); }
+  async function drawCard() {
+    var d = LAST, dark = CARDOPT.theme === "dark";
+    var C = dark ? { bg: "#0e1217", ink: "#eceff4", ink2: "#b5bdc9", mut: "#8f99a8", line: "#2a313c", acc: "#5598e7", dim: "#2d4f7c" } : { bg: "#f5f7fa", ink: "#12171e", ink2: "#48515e", mut: "#667080", line: "#dde3ec", acc: "#2a78d6", dim: "#b5d1f5" };
+    await loadFonts();
+    var W = 1080, H = 1350, P = 84, cw = W - 2 * P, cv = document.createElement("canvas"); cv.width = W; cv.height = H;
+    var x = cv.getContext("2d"), ls = function (v) { if ("letterSpacing" in x) x.letterSpacing = v; };
+    x.fillStyle = C.bg; x.fillRect(0, 0, W, H); x.textBaseline = "alphabetic"; x.textAlign = "left";
+    x.fillStyle = C.mut; x.font = "600 24px " + FU; ls("4px"); x.fillText("MY READING YEAR", P, 120); ls("0px");
+    var ys = d.years, scopeTxt = d.isAll ? (ys[0] === ys[ys.length - 1] ? String(ys[0]) : ys[0] + "–" + ys[ys.length - 1]) : String(d.scope), fs = scopeTxt.length > 4 ? 170 : 230;
+    do { x.font = "700 " + fs + "px " + FD; fs -= 6; } while (x.measureText(scopeTxt).width > cw && fs > 60);
+    x.fillStyle = C.acc; x.fillText(scopeTxt, P - 6, 320);
+    var nm = (CARDOPT.name || "").trim();
+    x.fillStyle = C.ink2; x.font = "500 38px " + FU;
+    x.fillText(fit(x, nm ? nm + "’s " + (d.isAll ? "reading life" : "year in books") : (d.isAll ? "Every book on the Read shelf" : "A year in books"), cw), P, 392);
+    var stats = [["Books", fmtN(d.cur.length)], ["Pages", d.totalPages >= 10000 ? compact(d.totalPages) : fmtN(d.totalPages)], ["Avg rating", d.avgRating == null ? "–" : fmt1(d.avgRating)]];
+    stats.forEach(function (s, i) {
+      var cx = P + (i === 2 ? 660 : i * 300), sz = 108;
+      do { x.font = "700 " + sz + "px " + FD; sz -= 4; } while (x.measureText(s[1]).width > 262 && sz > 40);
+      x.fillStyle = C.ink; x.fillText(s[1], cx, 560);
+      x.fillStyle = C.mut; x.font = "600 22px " + FU; ls("3px"); x.fillText(s[0].toUpperCase(), cx, 606); ls("0px");
+    });
+    var series = d.isAll ? d.years.map(function (y) { return d.per[y].books; }) : d.per[d.scope].months.map(function (m) { return m.books; });
+    var labs = d.isAll ? d.years.map(function (y) { return d.years.length > 8 ? "’" + String(y).slice(2) : String(y); }) : "JFMAMJJASOND".split("");
+    var base = 940, maxH = 180, mx = Math.max.apply(null, series.concat([1])), band = cw / series.length, bw = Math.min(56, band * 0.66), peak = series.indexOf(Math.max.apply(null, series));
+    x.fillStyle = C.mut; x.font = "600 22px " + FU; ls("3px"); x.fillText(d.isAll ? "BOOKS PER YEAR" : "BOOKS PER MONTH", P, 730); ls("0px");
+    series.forEach(function (v, i) {
+      var h = v ? Math.max(6, maxH * v / mx) : 0, bx = P + band * i + (band - bw) / 2;
+      x.fillStyle = i === peak ? C.acc : C.dim; if (v) rr(x, bx, base - h, bw, h, 6);
+      x.fillStyle = C.mut; x.font = "500 22px " + FU; x.textAlign = "center"; x.fillText(labs[i], bx + bw / 2, base + 36);
+      if (i === peak && v) { x.fillStyle = C.ink; x.font = "700 26px " + FU; x.fillText(String(v), bx + bw / 2, base - h - 12); }
+    });
+    x.textAlign = "left"; x.fillStyle = C.line; x.fillRect(P, base + 2, cw, 2);
+    var gc = genreCounts(d.cur), gk = gc.F + gc.N, bk = d.bestK, F = [];
+    F.push(["Busiest month", MONTHS[bk % 12] + (d.isAll ? " " + Math.floor(bk / 12) : "") + " · " + plural(d.byMonth[bk], "book")]);
+    if (d.gapAvg != null) F.push(["A book every", fmt1(d.gapAvg) + " days"]);
+    if (d.multi.length) F.push(["Most-read author", d.multi[0] + " · " + d.ac[d.multi[0]] + " books"]);
+    if (gk && gk / d.cur.length >= 0.5) { var fp = Math.round(gc.F / gk * 100); F.push(["Fiction / non-fiction", fp + "% / " + (100 - fp) + "%"]); }
+    var pb = d.cur.filter(function (b) { return b.pages; }); if (pb.length) F.push(["Average length", fmtN(d.totalPages / pb.length) + " pages"]);
+    F.slice(0, 4).forEach(function (r, i) {
+      var y = 1066 + i * 56;
+      x.textAlign = "left"; x.fillStyle = C.mut; x.font = "400 28px " + FU; x.fillText(r[0], P, y);
+      x.textAlign = "right"; x.fillStyle = C.ink; x.font = "600 32px " + FU; x.fillText(fit(x, r[1], cw * 0.62), W - P, y);
+      if (i < 3) { x.fillStyle = C.line; x.fillRect(P, y + 18, cw, 1); }
+    });
+    x.textAlign = "left"; x.fillStyle = C.mut; x.font = "400 22px " + FU; x.fillText("Made with My Reading Year", P, 1306);
+    return cv;
+  }
+  var cardTimer;
+  async function redrawCard() {
+    var cv = await drawCard(), src = cv.toDataURL("image/png");
+    $("ov-img").src = src; $("ov-dl").href = src;
+  }
+  async function openCard() {
+    if (!LAST) return;
+    try {
+      var cv = await drawCard();
+      openOv("Share card", cv.toDataURL("image/png"), "my-reading-year-card-" + String(LAST.scope).toLowerCase().replace(/[^a-z0-9]+/g, "-") + ".png", true);
+    } catch (e) { showMessage(esc(e.message || "The card could not be created."), true); }
   }
 
   /* ---------- events ---------- */
@@ -640,6 +1008,36 @@ footer { color: var(--muted); font-size: 13px; }
   document.addEventListener("pointerdown", onPoint);
   document.addEventListener("pointerleave", function () { tip.classList.remove("on"); });
   document.addEventListener("scroll", function () { tip.classList.remove("on"); }, true);
+
+  ["c-by", "c-py", "heat", "c-cal", "c-pace", "c-len", "c-rate", "c-dist", "authors"].forEach(function (id) {
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "imgbtn"; b.setAttribute("data-exp", id); b.textContent = "Save image";
+    $(id).closest(".panel").querySelector(".panel-head").appendChild(b);
+  });
+  document.addEventListener("click", function (e) {
+    var t = e.target.closest ? e.target.closest("[data-act],[data-g],[data-exp]") : null;
+    if (!t) return;
+    if (t.getAttribute("data-g")) {
+      var b = BOOKS[+t.getAttribute("data-i")]; if (!b) return;
+      var g = t.getAttribute("data-g"); if (g === "T") g = genreOf(b) === "F" ? "N" : "F";
+      MANUAL[b.key] = g; lsSet("ry.m1", MANUAL);
+      var s1 = $("unk").scrollTop, s2 = $("books").scrollTop; render(); $("unk").scrollTop = s1; $("books").scrollTop = s2;
+      return;
+    }
+    if (t.getAttribute("data-exp")) { exportChart(t.getAttribute("data-exp")); return; }
+    var a = t.getAttribute("data-act");
+    if (a === "lookup") runLookup();
+    else if (a === "cancel") LOOKUP.cancel = true;
+    else if (a === "share") openCard();
+  });
+  $("unk-det").addEventListener("toggle", function () { UOPEN = this.open; });
+  $("ov-close").addEventListener("click", closeOv);
+  ov.addEventListener("click", function (e) { if (e.target === ov) closeOv(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !ov.hidden) closeOv(); });
+  $("cardname").addEventListener("input", function (e) { CARDOPT.name = e.target.value; clearTimeout(cardTimer); cardTimer = setTimeout(redrawCard, 250); });
+  function setTheme(t) { CARDOPT.theme = t; $("card-dark").setAttribute("aria-pressed", t === "dark"); $("card-light").setAttribute("aria-pressed", t === "light"); redrawCard(); }
+  $("card-dark").addEventListener("click", function () { setTheme("dark"); });
+  $("card-light").addEventListener("click", function () { setTheme("light"); });
 
   var rt; var lastW = 0;
   new ResizeObserver(function (es) {
